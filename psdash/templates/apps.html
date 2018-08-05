@@ -1,0 +1,31 @@
+{% if not is_xhr|default(false) %}{% extends "base.html" %}{% endif -%}
+{% block content %}
+<div id="softwares">
+    <div class="box">
+        <div class="box-header">
+                <span>App List</span>
+            </div>
+            <div class="box-content">
+            	<table class="table">
+                	<thead>
+                    <tr>
+                        <th>App Names</th>
+                        <th>App Versions</th>
+                    </tr>
+                	</thead>
+                     <tbody>
+                    {% for key, value in apps.iteritems() %}
+                    <tr>
+                    	<td> {{ key }} </td>
+                    	<td> {{ value }} </td>
+                    </tr>
+	                {% endfor %}
+                	</tbody>
+            	</table>
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
