@@ -13,3 +13,13 @@ Customized version of psdash.
 ![Disks](/Screenshots/patdash4.png?raw=true "Disks")
 
 ![Packages](/Screenshots/patdash5.png?raw=true "Packages")
+
+## Running Code
+
+Clone the repository/Download it.
+
+Run by following command:
+
+```
+python psdash
+```
