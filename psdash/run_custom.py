@@ -9,9 +9,9 @@ import logging
 import socket
 import urllib
 import urllib2
-# import zerorpc
 from logging import getLogger
 from flask import Flask
+# import zerorpc
 from psdash import __version__
 from psdash.node import LocalNode, RemoteNode
 from psdash.web import fromtimestamp
@@ -79,7 +79,12 @@ class PsDashRunner(object):
             dest='debug',
             help='enables debug mode.'
         )
-        
+        # parser.add_argument(
+        #     '-a', '--agent',
+        #     action='store_true',
+        #     dest='agent',
+        #     help='Enables agent mode. This launches a RPC server, using zerorpc, on given bind host and port.'
+        # )
         parser.add_argument(
             '--register-to',
             action='store',
@@ -248,17 +253,17 @@ class PsDashRunner(object):
         except urllib2.HTTPError as e:
             logger.error('Failed to register agent to "%s": %s', register_url, e)
 
-    def _run_rpc(self):
-        logger.info("Starting RPC server (agent mode)")
+    # def _run_rpc(self):
+    #     logger.info("Starting RPC server (agent mode)")
 
-        if 'PSDASH_REGISTER_TO' in self.app.config:
-            self._register_agent()
+    #     if 'PSDASH_REGISTER_TO' in self.app.config:
+    #         self._register_agent()
 
-        service = self.get_local_node().get_service()
-        # self.server = zerorpc.Server(service)
-        self.server.bind('tcp://%s:%s' % (self.app.config.get('PSDASH_BIND_HOST', self.DEFAULT_BIND_HOST),
-                                          self.app.config.get('PSDASH_PORT', self.DEFAULT_PORT)))
-        self.server.run()
+    #     service = self.get_local_node().get_service()
+    #     self.server = zerorpc.Server(service)
+    #     self.server.bind('tcp://%s:%s' % (self.app.config.get('PSDASH_BIND_HOST', self.DEFAULT_BIND_HOST),
+    #                                       self.app.config.get('PSDASH_PORT', self.DEFAULT_PORT)))
+    #     self.server.run()
 
     def _run_web(self):
         logger.info("Starting web server")
