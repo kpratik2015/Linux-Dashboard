@@ -2,6 +2,16 @@
 
 Customized version of psdash.
 
+## Running Code
+
+Clone the repository/Download it.
+
+Run by following command:
+
+```
+python psdash
+```
+
 ## Screenshots
 
 ![Dashboard](/Screenshots/patdash1.png?raw=true "Dashboard")
@@ -14,12 +24,4 @@ Customized version of psdash.
 
 ![Packages](/Screenshots/patdash5.png?raw=true "Packages")
 
-## Running Code
 
-Clone the repository/Download it.
-
-Run by following command:
-
-```
-python psdash
-```
