@@ -20,21 +20,24 @@
 								</tr>
 							</thead>
 							<tbody>
+								{% for user in users %}
 								<tr>
-									<td>Users</td>
+									<td>{{ user }}</td>
 									
 
-									<td class="filter">
+									<td>
 
 									{% for p in procs %}
-									{{ p.name.decode("utf-8") }}
-									 &nbsp; 
+										{% if p.user == user %}
+											<a href="{{ url_for(".process", pid=p.pid) }}">{{ p.name.decode("utf-8") }} </a>
+									 		&nbsp; | &nbsp;
+									 	{% endif %}
 									{% endfor %}
 									</td>
 								
 
 								</tr>
-								
+								{% endfor %}
 							</tbody>
 						</table>
 					</div>
