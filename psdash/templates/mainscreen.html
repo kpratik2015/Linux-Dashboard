@@ -11,17 +11,20 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h2>Some Box</h2>
+						<h2>Process Management</h2>
 						<table id="table" class="table table-bordered table-intel">
 							<thead>
 								<tr>
+									<th class="filter">Box</th>
 									<th class="filter">Users</th>
 									<th>Process Names</th>
 								</tr>
 							</thead>
 							<tbody>
+
 								{% for user in users %}
 								<tr>
+									<td>box</td>
 									<td>{{ user }}</td>
 									
 
