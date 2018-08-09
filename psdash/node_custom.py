@@ -9,7 +9,10 @@ import time
 from psdash.log import Logs
 from psdash.helpers import socket_families, socket_types
 from psdash.net import get_interface_addresses, NetIOCounters
+# import xmlrpclib
+# from SimpleXMLRPCServer import SimpleXMLRPCServer
 
+import xmlrpc.client
 
 logger = logging.getLogger("psdash.node")
 
@@ -44,6 +47,15 @@ class RemoteNode(Node):
     #     c.connect('tcp://%s:%s' % (self.host, self.port))
     #     logger.info('Connected.')
     #     return c
+
+    def _create_service(self):
+        logger.info('Connecting to node %s', self.get_id())
+        # c = SimpleXMLRPCServer((self.host, self.port))
+        # c.connect('tcp://%s:%s' % (self.host, self.port))
+        c = xmlrpc.client.ServerProxy("http://%s:%s" % (self.host, self.port))
+        logger.info('Connected.')
+        # c.serve_forever()
+        return c
 
     def get_id(self):
         return '%s:%s' % (self.host, self.port)
