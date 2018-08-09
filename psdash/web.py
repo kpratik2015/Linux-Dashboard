@@ -356,11 +356,14 @@ def register_node():
 
 	current_app.psdash.register_node(name, host, port)
 	return jsonify({'status': 'OK'})
-
 @webapp.route('/mainscreen')
 def view_mainscreen():
+
+	procs = current_service.get_process_list()
+
 	return render_template(
 		'mainscreen.html',
 		page='mainscreen',
+		procs=procs,
 		is_xhr=request.is_xhr
 	)
