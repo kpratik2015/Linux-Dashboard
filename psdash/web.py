@@ -359,11 +359,18 @@ def register_node():
 @webapp.route('/mainscreen')
 def view_mainscreen():
 
+	output = subprocess.Popen(["ls", "/home/"], 
+                          stdout=subprocess.PIPE).communicate()[0]
+
+	users = output.split('\n')[:-1]
+	
+
 	procs = current_service.get_process_list()
 
 	return render_template(
 		'mainscreen.html',
 		page='mainscreen',
+		users=users,
 		procs=procs,
 		is_xhr=request.is_xhr
 	)
