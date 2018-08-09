@@ -15,7 +15,9 @@ from flask import Flask
 from psdash import __version__
 from psdash.node import LocalNode, RemoteNode
 from psdash.web import fromtimestamp
-
+import xmlrpclib
+# from xmlrpc.server import SimpleXMLRPCServer
+from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 logger = getLogger('psdash.run')
 
@@ -79,12 +81,12 @@ class PsDashRunner(object):
             dest='debug',
             help='enables debug mode.'
         )
-        # parser.add_argument(
-        #     '-a', '--agent',
-        #     action='store_true',
-        #     dest='agent',
-        #     help='Enables agent mode. This launches a RPC server, using zerorpc, on given bind host and port.'
-        # )
+        parser.add_argument(
+            '-a', '--agent',
+            action='store_true',
+            dest='agent',
+            help='Enables agent mode. This launches a RPC server, using zerorpc, on given bind host and port.'
+        )
         parser.add_argument(
             '--register-to',
             action='store',
@@ -151,6 +153,14 @@ class PsDashRunner(object):
 
         if config and isinstance(config, dict):
             app.config.update(config)
+
+        # CUSTOM
+
+        app.config.update(
+        	DEBUG=False,
+        	SECRET_KEY='\x19&\xbbb1ls\xb4i\xcfg\x1f"%d\x9eF.\xae\x92GH@\r',
+        	PSDASH_NODES=[{'name': 'mywebnode', 'host': '192.168.28.54', 'port': 5000}]
+        )
 
         self._load_allowed_remote_addresses(app)
 
@@ -264,6 +274,24 @@ class PsDashRunner(object):
     #     self.server.bind('tcp://%s:%s' % (self.app.config.get('PSDASH_BIND_HOST', self.DEFAULT_BIND_HOST),
     #                                       self.app.config.get('PSDASH_PORT', self.DEFAULT_PORT)))
     #     self.server.run()
+
+    def _run_rpc(self):
+        logger.info("Starting RPC server (agent mode)")
+
+        if 'PSDASH_REGISTER_TO' in self.app.config:
+            self._register_agent()
+
+        
+        service = self.get_local_node().get_service()
+        # self.server = zerorpc.Server(service)
+        self.server = SimpleXMLRPCServer((self.app.config.get('PSDASH_BIND_HOST', self.DEFAULT_BIND_HOST), self.app.config.get('PSDASH_PORT', self.DEFAULT_PORT)))
+        self.server.register_function(service, "service")
+        # self.server.bind('tcp://%s:%s' % (self.app.config.get('PSDASH_BIND_HOST', self.DEFAULT_BIND_HOST),
+                                          # self.app.config.get('PSDASH_PORT', self.DEFAULT_PORT)))
+        # self.server.run()
+        self.server.serve_forever()
+
+
 
     def _run_web(self):
         logger.info("Starting web server")
