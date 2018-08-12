@@ -12,56 +12,165 @@
 				<div class="row">
 					<div class="col-md-12">
 						<h2>Process Management</h2>
-						<table id="table" class="table table-bordered table-intel">
-							<thead>
-								<tr>
-									<th class="filter">Box</th>
-									<th class="filter">Users</th>
-									<th>Process Names</th>
-								</tr>
-							</thead>
-							<tbody>
+						<div id="toolbar">
+							<select class="form-control">
+								<option value="">Export Basic</option>
+								<option value="all">Export All</option>
+								<option value="selected">Export Selected</option>
+							</select>
+						</div>
+						<table 
 
-								{% for user in users %}
-								<tr>
-									<td>box</td>
-									<td>{{ user }}</td>
-									
+						id="table"
+						data-toggle="table"
+						data-toolbar="#toolbar"
+						data-maintain-selected="true"
+						data-search="true"
+						data-show-toggle="true"
+						data-show-columns="true"
+						data-show-export="true"
+						data-minimum-count-columns="2"
+						data-show-pagination-switch="true"
+						data-show-export="true"
+						data-pagination="true"
+						data-page-list="[10, 25, 50, 100, ALL]"
+						>
+						<thead>
+							<tr>
+								<th data-field="state" data-checkbox="true"></th>
+								<th data-field="box" data-sortable="true">Box</th>
+								<th data-field="users" data-sortable="true">Users</th>
+								<th 
+								data-field="process_names" 
+								data-sortable="true"
+								>Process Names</th>
+							</tr>
+						</thead> 
+						<tbody>
 
-									<td>
-
+							{% for user in users %}
+							<tr>
+								<td></td>
+								<td>box</td>
+								<td>{{ user }}</td>
+								<td>
 									{% for p in procs %}
-										{% if p.user == user %}
-											<a href="{{ url_for(".process", pid=p.pid) }}">{{ p.name.decode("utf-8") }} </a>
-									 		&nbsp; | &nbsp;
-									 	{% endif %}
-									{% endfor %}
-									</td>
-								
+									{% if p.user == user %}
+									<a href="{{ url_for(".process", pid=p.pid) }}">{{ p.name.decode("utf-8") }} </a>, 
 
-								</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					</div>
+									{% endif %}
+									{% endfor %} 
+								</td>
+
+
+
+
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+
+
 				</div>
 
 
 			</div>
 
+
 		</div>
 
 	</div>
 
+</div>
 
-	<script>
-    // Use the plugin once the DOM has been loaded.
-    $(function () {
-      // Apply the plugin 
-      skip_updates = true;
-      $('#table').excelTableFilter();
 
-  });
+<script>
+  //   // Use the plugin once the DOM has been loaded.
+
+  // $(document).on("click", '#table', function(event) { 
+  	// $('#table').delegate("td", "hover", function(){
+
+  		
+  	// });
+
+  	// setTimeout(function() {
+
+
+  		
+  	// 
+  	// }, 3000);
+
+
+
+
+  	$(function () {
+
+  		
+  		
+
+
+  		// var data = [ 
+
+  		// {
+  		// 	"name": "ok",
+  		// 	"items" : [ {"1": "ok"}, {"2":"ok"} ]
+  		// },
+  		// {
+  		// 	"name": "zebra",
+  		// 	"items" : [ {"1": "ok"}, {"2":"ok"} ]	
+  		// }
+  		// ]
+  		// $('#table').bootstrapTable({
+  		// 	exportOptions: {
+  		// 		fileName: 'process_data'
+  		// 	}
+  		// });
+  		// 	columns: [
+  		// 	[
+  		// 	{
+  		// 		title: 'Name',
+  		// 		field: 'name',
+  		// 		sortable: true
+  		// 	},
+  		// 	{
+  		// 		title: 'Items',
+  		// 		field: 'items',
+  		// 		colspan: 2
+  		// 	}
+  		// 	],
+  		// 	[
+  		// 	{
+  		// 		title: '1',
+  		// 		field: '1',
+  		// 		sortable: true
+  		// 	},
+  		// 	{
+  		// 		title: '2',
+  		// 		field: '2'
+  		// 	}
+  		// 	]
+  		// 	],
+  		// 	data: data
+  		// });
+
+
+  		var $table = $('#table');
+  		$('#toolbar').find('select').change(function () {
+  			$table.bootstrapTable('refreshOptions', {
+  				exportDataType: $(this).val()	
+  			});
+  		});
+
+  		skip_updates = true;
+  		
+
+  //     // Apply the plugin 
+  
+  //     $('#table').excelTableFilter();
+
+
+
+});
 </script>
 </div>
 

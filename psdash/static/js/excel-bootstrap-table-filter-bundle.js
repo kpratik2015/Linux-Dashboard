@@ -10,14 +10,20 @@ var FilterMenu = function () {
         this.column = column;
         this.index = index;
         this.tds = target.find('tbody tr td:nth-child(' + (this.column + 1) + ')').toArray();
+        // console.log(this.tds);
+        // console.log(this.options);
     }
     FilterMenu.prototype.initialize = function () {
         this.menu = this.dropdownFilterDropdown();
+        // console.log(this.menu)
         this.th.appendChild(this.menu);
         var $trigger = $(this.menu.children[0]);
+        // console.log($trigger)
         var $content = $(this.menu.children[1]);
+        // console.log(this.menu.children[0])
         var $menu = $(this.menu);
         $trigger.click(function () {
+            // console.log($content)
             return $content.toggle();
         });
         $(document).click(function (el) {
@@ -60,6 +66,7 @@ var FilterMenu = function () {
     };
     FilterMenu.prototype.dropdownFilterItem = function (td, self) {
         var value = td.innerText;
+        // console.log(value)
         var dropdownFilterItem = document.createElement('div');
         dropdownFilterItem.className = 'dropdown-filter-item';
         var input = document.createElement('input');
@@ -71,6 +78,7 @@ var FilterMenu = function () {
         input.setAttribute('data-index', self.index.toString());
         dropdownFilterItem.appendChild(input);
         dropdownFilterItem.innerHTML = dropdownFilterItem.innerHTML.trim() + ' ' + value;
+        // console.log(dropdownFilterItem)
         return dropdownFilterItem;
     };
     FilterMenu.prototype.dropdownFilterItemSelectAll = function () {
@@ -118,9 +126,11 @@ var FilterMenu = function () {
         dropdownFilterContent.className = 'dropdown-filter-content';
         var innerDivs = this.tds.reduce(function (arr, el) {
             var values = arr.map(function (el) {
+                // console.log(el.innerText.trim())
                 return el.innerText.trim();
             });
             if (values.indexOf(el.innerText.trim()) < 0) arr.push(el);
+            // console.log(arr)
             return arr;
         }, []).sort(function (a, b) {
             var A = a.innerText.toLowerCase();
@@ -152,6 +162,7 @@ var FilterMenu = function () {
         var elements = [];
         if (this.options.sort) elements = elements.concat([this.dropdownFilterSort(this.options.captions.a_to_z), this.dropdownFilterSort(this.options.captions.z_to_a)]);
         if (this.options.search) elements.push(searchFilterDiv);
+        // console.log(elements)
         return elements.concat(outerDiv).reduce(function (html, el) {
             html.appendChild(el);
             return html;
@@ -166,8 +177,10 @@ var FilterMenu = function () {
         icon.className = 'arrow-down';
         arrow.appendChild(icon);
         dropdownFilterDropdown.appendChild(arrow);
+        // console.log(this.th)
         dropdownFilterDropdown.appendChild(this.dropdownFilterContent());
         if ($(this.th).hasClass('no-sort')) {
+            // console.log("TRUE")
             $(dropdownFilterDropdown).find('.dropdown-filter-sort').remove();
         }
         if ($(this.th).hasClass('no-filter')) {
@@ -175,6 +188,9 @@ var FilterMenu = function () {
         }
         if ($(this.th).hasClass('no-search')) {
             $(dropdownFilterDropdown).find('.dropdown-filter-search').remove();
+        }
+        if ($(this.th).hasClass('no-filter-menu')) {
+            dropdownFilterDropdown = document.createElement('div');
         }
         return dropdownFilterDropdown;
     };
@@ -186,12 +202,16 @@ var FilterCollection = function () {
         this.target = target;
         this.options = options;
         this.ths = target.find('th' + options.columnSelector).toArray();
+        // console.log(this.ths)
         this.filterMenus = this.ths.map(function (th, index) {
             var column = $(th).index();
+            // console.log(column)
             return new FilterMenu(target, th, column, index, options);
         });
         this.rows = target.find('tbody').find('tr').toArray();
+        // console.log(this.rows)
         this.table = target.get(0);
+        // console.log(this.table)
     }
     FilterCollection.prototype.initialize = function () {
         this.filterMenus.forEach(function (filterMenu) {
@@ -285,6 +305,7 @@ var FilterCollection = function () {
         if (order === options.captions.z_to_a.toLowerCase().split(' ').join('-')) flip = -1;
         var tbody = $(table).find('tbody').get(0);
         var rows = $(tbody).find('tr').get();
+        // console.log(rows)
         rows.sort(function (a, b) {
             var A = a.children[column].innerText.toUpperCase();
             var B = b.children[column].innerText.toUpperCase();

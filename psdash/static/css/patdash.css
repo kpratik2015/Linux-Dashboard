@@ -364,3 +364,9 @@ a:hover {
 		padding-right:15px;
 	}
 }
+
+#table {
+
+    display: block;
+    overflow-x: scroll;
+}
