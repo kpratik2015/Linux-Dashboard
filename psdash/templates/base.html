@@ -28,7 +28,11 @@
         <div class="header">
             <div class="logo">
                 <a href="{{ url_for(".index") }}">
-                    <span class="app-name">PatDash<small>v0.1.0</small></span>
+                    <span class="app-name">PatDash<small>v0.1.0</small> <a id="hide-nav" href="#"><i class="fa fa-angle-double-left"> </i> </a></span>
+                </a>
+            </div>
+            <div class="logo-hidden" style="display: none;">
+                <a id="show-nav" href="#"><i class="fa fa-angle-double-right"> </i> </a></span>
                 </a>
             </div>
             <div class="top-nav">
@@ -100,6 +104,56 @@
                         <a href="{{ url_for(".view_mainscreen") }}">
                             <span class="fa fa-book"></span>
                             <span class="option-text">Main Screen</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="left-nav-hidden" style="display: none;">
+                <ul class="menu">
+                    <li {% if page == "overview" %}class="active"{% endif %}>
+                        <a href="{{ url_for(".index") }}">
+                            <span class="fa fa-th"></span>
+                            
+                        </a>
+                    </li>
+                    <li {% if page == "processes" %}class="active"{% endif %}>
+                        <a href="{{ url_for(".processes") }}">
+                            <span class="fa fa-tasks"></span>
+                            
+                        </a>
+                    </li>
+                    <li {% if page == "network" %}class="active"{% endif %}>
+                        <a href="{{ url_for(".view_networks") }}">
+                            <span class="fa fa-connectdevelop"></span>
+                            
+                        </a>
+                    </li>
+                    <li {% if page == "disks" %}class="active"{% endif %}>
+                        <a href="{{ url_for(".view_disks") }}">
+                            <span class="fa fa-hdd"></span>
+                            
+                        </a>
+                    </li>
+                    <li {% if page == "logs" %}class="active"{% endif %}>
+                        <a href="{{ url_for(".view_logs") }}">
+                            <span class="fa fa-book"></span>
+                            
+                        </a>
+                    </li>
+
+                    <li {% if page == "apps" %}class="active"{% endif %}>
+                        <a href="{{ url_for(".view_apps") }}">
+                            <span class="fa fa-book"></span>
+                            
+                        </a>
+                    </li>
+
+                    <li {% if page == "mainscreen" %}class="active"{% endif %}>
+                        <a href="{{ url_for(".view_mainscreen") }}">
+                            <span class="fa fa-book"></span>
+                            
                         </a>
                     </li>
 

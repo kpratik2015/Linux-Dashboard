@@ -24,9 +24,22 @@ a:hover {
     color: #ffffff;
 }
 
+#psdash .header .logo-hidden a {
+    color: #ffffff;
+}
+
 #psdash .header .logo {
     background-color: #458bbe;
     width: 200px;
+    position: absolute;
+    text-align: center;
+}
+
+#psdash .header .logo-hidden {
+    background-color: #458bbe;
+    width: 70px;
+    height: 60px;
+    padding-top: 20px;
     position: absolute;
     text-align: center;
 }
@@ -369,4 +382,31 @@ a:hover {
 
     display: block;
     overflow-x: scroll;
+}
+
+.left-nav-hidden {
+    width: 70px;
+    background-color: #313443;
+    color: #ffffff;
+}
+
+.left-nav-hidden .menu {
+    list-style-type: none;
+    margin: 20px 0 0 0;
+    padding: 0;
+}
+#psdash .table-container .content .left-nav-hidden ul.menu li.active a {
+    text-decoration: none;
+    color: #ffffff;
+    border-left: 4px solid #d43f3a;
+}
+
+#psdash .table-container .content .left-nav-hidden ul.menu li a {
+    display: block;
+    width: 70px;
+    height: 40px;
+    padding-top: 6px;
+    padding-left: 20px;
+    border-left: 4px solid #313443;
+    color: #adadad;
 }

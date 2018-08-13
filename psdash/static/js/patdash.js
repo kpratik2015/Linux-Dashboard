@@ -159,3 +159,22 @@ $(document).ready(function() {
         init_log();
     }
 });
+
+
+$(document).ready(function() {
+
+    $('#hide-nav').on("click", function() {
+        $('.left-nav').animate({left: "toggle"}, 500).hide();     
+        $('.logo').animate({left: "toggle"}, 500).hide();     
+        $('.left-nav-hidden').animate({left: "toggle"}, 1000).show();     
+        $('.logo-hidden').animate({left: "toggle"}, 1000).show();
+    });
+
+    $('#show-nav').on("click", function() {
+        $('.left-nav').animate({left: "toggle"}, 1000).show();     
+        $('.logo').animate({left: "toggle"}, 1000).show();     
+        $('.left-nav-hidden').animate({left: "toggle"}, 500).hide();     
+        $('.logo-hidden').animate({left: "toggle"}, 500).hide();
+    });
+
+});
