@@ -11,7 +11,7 @@ from psdash.helpers import socket_families, socket_types
 import json
 from pprint import pprint
 import os
-
+import subprocess
 
 logger = logging.getLogger('psdash.web')
 webapp = Blueprint('psdash', __name__, static_folder='static')
@@ -356,21 +356,37 @@ def register_node():
 
 	current_app.psdash.register_node(name, host, port)
 	return jsonify({'status': 'OK'})
+
+
 @webapp.route('/mainscreen')
 def view_mainscreen():
 
-	output = subprocess.Popen(["ls", "/home/"], 
+	output = subprocess.Popen(["cut", "-d:", "-f1", "/etc/passwd"], 
                           stdout=subprocess.PIPE).communicate()[0]
 
 	users = output.split('\n')[:-1]
-	
+
+	maxlen = 0
+
+	# print(users)
 
 	procs = current_service.get_process_list()
+
+	user_procs = current_service.get_user_process_list()
+
+	for user_p in user_procs:
+		# print('Checking for: ', user_p, 'with length', len(user_procs[user_p]))	
+		if maxlen < len(user_procs[user_p]) and user_p != 'root':
+			maxlen = len(user_procs[user_p])
+
+
 
 	return render_template(
 		'mainscreen.html',
 		page='mainscreen',
 		users=users,
+		user_procs=user_procs,
+		maxlen=maxlen,
 		procs=procs,
 		is_xhr=request.is_xhr
 	)

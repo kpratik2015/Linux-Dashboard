@@ -5,11 +5,14 @@ import platform
 import psutil
 import socket
 import time
-import zerorpc
+# import zerorpc
 from psdash.log import Logs
 from psdash.helpers import socket_families, socket_types
 from psdash.net import get_interface_addresses, NetIOCounters
+# import xmlrpclib
+# from SimpleXMLRPCServer import SimpleXMLRPCServer
 
+import xmlrpc.client
 
 logger = logging.getLogger("psdash.node")
 
@@ -38,11 +41,20 @@ class RemoteNode(Node):
         self.port = int(port)
         self.last_registered = None
 
+    # def _create_service(self):
+    #     logger.info('Connecting to node %s', self.get_id())
+    #     c = zerorpc.Client()
+    #     c.connect('tcp://%s:%s' % (self.host, self.port))
+    #     logger.info('Connected.')
+    #     return c
+
     def _create_service(self):
         logger.info('Connecting to node %s', self.get_id())
-        c = zerorpc.Client()
-        c.connect('tcp://%s:%s' % (self.host, self.port))
+        # c = SimpleXMLRPCServer((self.host, self.port))
+        # c.connect('tcp://%s:%s' % (self.host, self.port))
+        c = xmlrpc.client.ServerProxy("http://%s:%s" % (self.host, self.port))
         logger.info('Connected.')
+        # c.serve_forever()
         return c
 
     def get_id(self):
@@ -179,6 +191,37 @@ class LocalService(object):
             process_list.append(proc)
 
         return process_list
+
+    def get_user_process_list(self):
+        process_user_list = {}
+        for p in psutil.process_iter():
+            mem = p.memory_info()
+
+            try:
+                username = p.username()
+            except KeyError:
+                username = None
+
+            proc = {
+                'pid': p.pid,
+                'name': p.name(),
+                'cmdline': ' '.join(p.cmdline()),
+                'user': username,
+                'status': p.status(),
+                'created': p.create_time(),
+                'mem_rss': mem.rss,
+                'mem_vms': mem.vms,
+                'mem_percent': p.memory_percent(),
+                'cpu_percent': p.cpu_percent(0)
+            }
+
+            if username in process_user_list:
+                process_user_list[username].append(proc)
+            else:
+                process_user_list[username] = [proc]
+
+        return process_user_list
+
 
     def get_process(self, pid):
         p = psutil.Process(pid)

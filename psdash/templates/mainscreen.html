@@ -37,35 +37,43 @@
 						>
 						<thead>
 							<tr>
-								<th data-field="state" data-checkbox="true"></th>
-								<th data-field="box" data-sortable="true">Box</th>
-								<th data-field="users" data-sortable="true">Users</th>
+								<th rowspan="2" data-field="state" data-checkbox="true"></th>
+								<th rowspan="2" data-field="box" data-sortable="true">Box</th>
+								<th rowspan="2" data-field="users" data-sortable="true">Users</th>
 								<th 
+								scope="colgroup"
 								data-field="process_names" 
 								data-sortable="true"
+								colspan="{{maxlen}}"
 								>Process Names</th>
+							</tr>
+							<tr>
+								{% for i in range(1,maxlen+1) %}
+								<th data-field="process{{i}}" scope="col"> {{i}}</th>
+								{% endfor %}
 							</tr>
 						</thead> 
 						<tbody>
 
-							{% for user in users %}
+							{% for user_p in user_procs %}
+							{% if user_p != 'root' %}
 							<tr>
 								<td></td>
 								<td>box</td>
-								<td>{{ user }}</td>
+								<td>{{ user_p }}</td>
+								
+								{% for p in user_procs[user_p] %}
 								<td>
-									{% for p in procs %}
-									{% if p.user == user %}
-									<a href="{{ url_for(".process", pid=p.pid) }}">{{ p.name.decode("utf-8") }} </a>, 
+									
+									<a href="{{ url_for(".process", pid=p.pid) }}">{{ p.name.decode("utf-8") }} </a>
+								
 
-									{% endif %}
-									{% endfor %} 
 								</td>
-
-
-
+								{% endfor %} 
+							
 
 							</tr>
+							{% endif %}
 							{% endfor %}
 						</tbody>
 					</table>
@@ -105,53 +113,29 @@
 
   	$(function () {
 
-  		
-  		
+  		skip_updates = true;
 
-
-  		// var data = [ 
-
-  		// {
-  		// 	"name": "ok",
-  		// 	"items" : [ {"1": "ok"}, {"2":"ok"} ]
-  		// },
-  		// {
-  		// 	"name": "zebra",
-  		// 	"items" : [ {"1": "ok"}, {"2":"ok"} ]	
-  		// }
-  		// ]
-  		// $('#table').bootstrapTable({
-  		// 	exportOptions: {
-  		// 		fileName: 'process_data'
-  		// 	}
-  		// });
-  		// 	columns: [
-  		// 	[
-  		// 	{
-  		// 		title: 'Name',
-  		// 		field: 'name',
-  		// 		sortable: true
-  		// 	},
-  		// 	{
-  		// 		title: 'Items',
-  		// 		field: 'items',
-  		// 		colspan: 2
-  		// 	}
-  		// 	],
-  		// 	[
-  		// 	{
-  		// 		title: '1',
-  		// 		field: '1',
-  		// 		sortable: true
-  		// 	},
-  		// 	{
-  		// 		title: '2',
-  		// 		field: '2'
-  		// 	}
-  		// 	]
-  		// 	],
-  		// 	data: data
-  		// });
+  		$('#table').bootstrapTable({
+  			
+  			columns: 
+  			[
+  			{
+  				title: 'state',
+  			},
+  			{
+  				title: 'Box',
+  				field: 'box'
+  			},
+  			{
+  				title: 'Users',
+  				field: 'users'
+  			},
+  			{
+  				title: 'Process Name',
+  				field: 'process_names'
+  			}
+  			]
+  		});
 
 
   		var $table = $('#table');
@@ -161,17 +145,13 @@
   			});
   		});
 
-  		skip_updates = true;
   		
 
-  //     // Apply the plugin 
-  
-  //     $('#table').excelTableFilter();
 
 
 
-});
-</script>
+  	});
+  </script>
 </div>
 
 {% endblock %}
