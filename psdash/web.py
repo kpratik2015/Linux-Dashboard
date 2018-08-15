@@ -379,7 +379,32 @@ def view_mainscreen():
 		if maxlen < len(user_procs[user_p]) and user_p != 'root':
 			maxlen = len(user_procs[user_p])
 
+	try:
+		processList = []
 
+		for user_p in user_procs:
+			process_dict = {
+				'box' : 'Box',
+				'users' : user_p
+			}
+			itr = 1
+			for p in user_procs[user_p]:
+				process_dict['process'+str(itr)] = '<a href="/process/'+str(p.get('pid'))+'">'+str(p['name'])+'</a>'
+				itr+=1
+
+			processList.append(process_dict)
+		current_app.static_url_path=current_app.config.get('STATIC_FOLDER')
+		current_app.static_folder=current_app.root_path + current_app.static_url_path
+		
+		# print(current_app.static_folder)
+		final_json = { 'data' : processList }
+		jsonStr = json.dumps(final_json)
+		# print(jsonStr)
+
+		with open(current_app.static_folder+'/data.json', 'w') as outfile:
+			json.dump(final_json, outfile)
+	except Exception ,e:
+		print(str(e))
 
 	return render_template(
 		'mainscreen.html',
