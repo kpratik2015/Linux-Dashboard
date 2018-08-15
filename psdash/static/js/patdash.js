@@ -161,20 +161,30 @@ $(document).ready(function() {
 });
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-    $('#hide-nav').on("click", function() {
-        $('.left-nav').animate({left: "toggle"}, 500).hide();     
-        $('.logo').animate({left: "toggle"}, 500).hide();     
-        $('.left-nav-hidden').animate({left: "toggle"}, 1000).show();     
-        $('.logo-hidden').animate({left: "toggle"}, 1000).show();
+    $('#hide-nav').on("click", function () {
+        $('.left-nav').animate({ width: 0 }, 1000).hide();
+        $('.logo').animate({ left: 0 }, 1000).hide();
+        $('.left-nav-hidden').animate({ width: 100 }, 1000).show();
+        $('.logo-hidden').animate({ left: 0 }, 1000).show();
+        $('#psdash .header .top-nav').css('padding-left', '70px');
     });
 
-    $('#show-nav').on("click", function() {
-        $('.left-nav').animate({left: "toggle"}, 1000).show();     
-        $('.logo').animate({left: "toggle"}, 1000).show();     
-        $('.left-nav-hidden').animate({left: "toggle"}, 500).hide();     
-        $('.logo-hidden').animate({left: "toggle"}, 500).hide();
+    $('#show-nav').on("click", function () {
+        $('.left-nav').animate({ width: 200 }, 1000).show();
+        $('.logo').animate({ left: 0 }, 1000).show();
+        $('.left-nav-hidden').animate({ width: 0 }, 1000).hide();
+        $('.logo-hidden').animate({ left: 0 }, 1000).hide();
+        $('#psdash .header .top-nav').css('padding-left', '200px');
+
+        
     });
+
+    // $('.left-nav-hidden').hover(function () {
+    //     $(this).animate({ display: 'table-cell' }, 500);
+    // }, function () {
+    //     $(this).animate({ display: 'none' }, 500);
+    // }).trigger('mouseleave');
 
 });
