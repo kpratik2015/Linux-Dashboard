@@ -27,7 +27,9 @@
 						data-maintain-selected="true"
 						data-search="true"
 						data-show-toggle="true"
+						data-show-refresh="true"
 						data-show-columns="true"
+						data-cache="false"
 						data-show-export="true"
 						data-reorderable-columns="true"
 						data-minimum-count-columns="2"
@@ -100,8 +102,8 @@
   	$(function () {
 
   		skip_updates = true;
-
-  		$('#table').bootstrapTable({
+  		// $('#table').bootstrapTable('refresh');
+  		$('#table').bootstrapTable({ 
   			
   			// columns: [
   			// [
