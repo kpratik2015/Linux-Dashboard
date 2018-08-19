@@ -360,28 +360,17 @@ def register_node():
 
 @webapp.route('/mainscreen')
 def view_mainscreen():
-
 	output = subprocess.Popen(["cut", "-d:", "-f1", "/etc/passwd"], 
-                          stdout=subprocess.PIPE).communicate()[0]
+					  stdout=subprocess.PIPE).communicate()[0]
 
 	users = output.split('\n')[:-1]
-
 	maxlen = 0
-
-	# print(users)
-
-	procs = current_service.get_process_list()
-
 	user_procs = current_service.get_user_process_list()
-
 	for user_p in user_procs:
-		# print('Checking for: ', user_p, 'with length', len(user_procs[user_p]))	
-		if maxlen < len(user_procs[user_p]) and user_p != 'root':
+		if maxlen < len(user_procs[user_p]):
 			maxlen = len(user_procs[user_p])
-
 	try:
 		processList = []
-
 		for user_p in user_procs:
 			process_dict = {
 				'box' : 'Box',
@@ -389,29 +378,38 @@ def view_mainscreen():
 			}
 			itr = 1
 			for p in user_procs[user_p]:
-				process_dict['process'+str(itr)] = '<a href="/process/'+str(p.get('pid'))+'">'+str(p['name'])+'</a>'
+				process_dict['process'+str(itr)] = (
+					'<a href="/process/'
+					+ str(p.get('pid'))
+					+ '">'
+					+ str(p['name'])
+					+ '</a>'
+					)
 				itr+=1
 
 			processList.append(process_dict)
 		current_app.static_url_path=current_app.config.get('STATIC_FOLDER')
 		current_app.static_folder=current_app.root_path + current_app.static_url_path
-		
-		# print(current_app.static_folder)
 		final_json = { 'data' : processList }
 		jsonStr = json.dumps(final_json)
-		# print(jsonStr)
-
-		with open(current_app.static_folder+'/data.json', 'w') as outfile:
-			json.dump(final_json, outfile)
 	except Exception ,e:
 		print(str(e))
 
-	return render_template(
-		'mainscreen.html',
-		page='mainscreen',
-		users=users,
-		user_procs=user_procs,
-		maxlen=maxlen,
-		procs=procs,
-		is_xhr=request.is_xhr
-	)
+	if 'api' in request.args:
+		response = current_app.response_class(
+				response=json.dumps(final_json),
+				status=200,
+				mimetype='application/json'
+			)
+
+		return response
+	else:
+		return render_template(
+			'mainscreen.html',
+			page='mainscreen',
+			users=users,
+			maxlen=maxlen,
+			is_xhr=request.is_xhr
+		)
+
+
